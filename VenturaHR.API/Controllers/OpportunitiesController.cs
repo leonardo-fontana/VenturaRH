@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Ventura.HR.Domain;
+using Ventura.RH.Domain;
 
 namespace VenturaHR.API.Controllers
 {
@@ -19,7 +20,10 @@ namespace VenturaHR.API.Controllers
         // GET: api/Opportunities
         public IQueryable<Opportunity> GetOpportunitySet()
         {
-            return db.OpportunitySet;
+            DateTime current_date = DateTime.Now;
+            
+            return db.OpportunitySet.Where(x =>
+            DbFunctions.TruncateTime(x.ExpireDate) >= DbFunctions.TruncateTime(current_date)); 
         }
 
         // GET: api/Opportunities/5
@@ -79,6 +83,9 @@ namespace VenturaHR.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            DateTime current_date = DateTime.Now;
+            opportunity.CreateDate = current_date;
+            opportunity.ExpireDate = current_date.AddDays(30);
             db.OpportunitySet.Add(opportunity);
             db.SaveChanges();
 

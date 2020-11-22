@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ventura.HR.Domain
+namespace Ventura.RH.Domain
 {
     using System;
     using System.Data.Entity;

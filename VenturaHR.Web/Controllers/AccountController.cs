@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -18,15 +19,31 @@ namespace VenturaHR.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext context;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
+            context = new ApplicationDbContext();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager,ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
         }
 
         public ApplicationSignInManager SignInManager
@@ -140,6 +157,15 @@ namespace VenturaHR.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+            {
+                if(role.Name != "Admin") {
+                    list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+                }               
+            }
+            ViewBag.Roles = list;
+
             return View();
         }
 
@@ -158,20 +184,14 @@ namespace VenturaHR.Web.Controllers
                     var user = new ApplicationUser {
                         UserName = model.Email,
                         Email = model.Email,
-                        Name = model.Name,
-                        Lastname = model.Lastname,
-                        Age = model.Age,
-                        CPF = model.CPF
+                        Name = model.Name,                    
                     };
                     
-                    var result = await UserManager.CreateAsync(user, model.Password);
-                   
-                    var userStore = new UserStore<ApplicationUser>(context);
-                    var userManager = new UserManager<ApplicationUser>(userStore);
-                    userManager.AddToRole(user.Id, "User");
-
+                    var result = await UserManager.CreateAsync(user, model.Password);                  
+                    
                     if (result.Succeeded)
                     {
+                        await this.UserManager.AddToRoleAsync(user.Id, model.RoleName);
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/14/2020 23:05:23
+-- Date Created: 11/22/2020 00:47:16
 -- Generated from EDMX file: C:\Users\leodf\source\repos\VenturaRH\Ventura.RH.Domain\Model1.edmx
 -- --------------------------------------------------
 
@@ -20,11 +20,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_Administrator_inherits_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[User_Administrator] DROP CONSTRAINT [FK_Administrator_inherits_User];
 GO
-IF OBJECT_ID(N'[dbo].[FK_CommonUser_inherits_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[User_CommonUser] DROP CONSTRAINT [FK_CommonUser_inherits_User];
-GO
 IF OBJECT_ID(N'[dbo].[FK_Enterprise_inherits_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[User_Enterprise] DROP CONSTRAINT [FK_Enterprise_inherits_User];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommonUser_inherits_User]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[User_CommonUser] DROP CONSTRAINT [FK_CommonUser_inherits_User];
 GO
 
 -- --------------------------------------------------
@@ -40,11 +40,11 @@ GO
 IF OBJECT_ID(N'[dbo].[User_Administrator]', 'U') IS NOT NULL
     DROP TABLE [dbo].[User_Administrator];
 GO
-IF OBJECT_ID(N'[dbo].[User_CommonUser]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[User_CommonUser];
-GO
 IF OBJECT_ID(N'[dbo].[User_Enterprise]', 'U') IS NOT NULL
     DROP TABLE [dbo].[User_Enterprise];
+GO
+IF OBJECT_ID(N'[dbo].[User_CommonUser]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[User_CommonUser];
 GO
 
 -- --------------------------------------------------
@@ -57,8 +57,8 @@ CREATE TABLE [dbo].[OpportunitySet] (
     [Name] nvarchar(max)  NOT NULL,
     [Description] nvarchar(max)  NOT NULL,
     [CriterionList] nvarchar(max)  NOT NULL,
-    [ExpireDate] nvarchar(max)  NOT NULL,
-    [CreateDate] nvarchar(max)  NOT NULL
+    [ExpireDate] datetime  NOT NULL,
+    [CreateDate] datetime  NOT NULL
 );
 GO
 

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ventura.HR.Domain
+namespace Ventura.RH.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Ventura.HR.Domain
         public string Name { get; set; }
         public string Description { get; set; }
         public string CriterionList { get; set; }
-        public string ExpireDate { get; set; }
-        public string CreateDate { get; set; }
+        public System.DateTime ExpireDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
     }
 }

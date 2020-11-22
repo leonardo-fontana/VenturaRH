@@ -4,9 +4,10 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
-using Ventura.HR.Domain;
+using Ventura.RH.Domain;
 
 namespace VenturaHR.Web.Controllers
 {
@@ -16,12 +17,39 @@ namespace VenturaHR.Web.Controllers
         private Model1Container db = new Model1Container();
 
         // GET: Opportunities
-        [Authorize (Roles="Users")]
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(db.OpportunitySet.ToList());
+            IEnumerable<Opportunity> opportunities = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:44351/api/");
+                //HTTP GET
+                var responseTask = client.GetAsync("Opportunities");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<Opportunity>>();
+                    readTask.Wait();
+
+                    opportunities = readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..
+
+                    opportunities = Enumerable.Empty<Opportunity>();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+            }
+            return View(opportunities);
         }
 
+        [Authorize]
         // GET: Opportunities/Details/5
         public ActionResult Details(int? id)
         {
@@ -38,7 +66,7 @@ namespace VenturaHR.Web.Controllers
         }
 
         // GET: Opportunities/Create
-        [Authorize (Roles= "Enterprise")]
+        [Authorize(Roles = "Enterprise")]
         public ActionResult Create()
         {
             return View();
@@ -49,23 +77,30 @@ namespace VenturaHR.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,CriterionList")] Opportunity opportunity)
+        public ActionResult Create(Opportunity opportunity)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                DateTime current_date = DateTime.Now;
-                opportunity.CreateDate = current_date.ToString();
-                opportunity.ExpireDate = current_date.AddDays(30).ToString();
-
-                db.OpportunitySet.Add(opportunity);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    client.BaseAddress = new Uri("https://localhost:44351/api/Opportunities");
+                    var postTask = client.PostAsJsonAsync<Opportunity>("opportunities", opportunity);
+                    postTask.Wait();
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                   
+                }
             }
+                
 
             return View(opportunity);
         }
 
         // GET: Opportunities/Edit/5
+        [Authorize(Roles = "Enterprise")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -97,6 +132,7 @@ namespace VenturaHR.Web.Controllers
         }
 
         // GET: Opportunities/Delete/5
+        [Authorize(Roles = "Enterprise")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
