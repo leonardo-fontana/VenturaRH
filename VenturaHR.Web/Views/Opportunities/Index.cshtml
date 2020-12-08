@@ -18,13 +18,13 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CriterionList)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ExpireDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CriteriaId)
         </th>
         <th></th>
     </tr>
@@ -38,13 +38,13 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CriterionList)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ExpireDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CriteriaId)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

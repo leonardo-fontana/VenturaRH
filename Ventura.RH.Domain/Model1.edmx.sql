@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/22/2020 00:47:16
+-- Date Created: 11/30/2020 14:34:15
 -- Generated from EDMX file: C:\Users\leodf\source\repos\VenturaRH\Ventura.RH.Domain\Model1.edmx
 -- --------------------------------------------------
 
@@ -20,11 +20,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_Administrator_inherits_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[User_Administrator] DROP CONSTRAINT [FK_Administrator_inherits_User];
 GO
-IF OBJECT_ID(N'[dbo].[FK_Enterprise_inherits_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[User_Enterprise] DROP CONSTRAINT [FK_Enterprise_inherits_User];
-GO
 IF OBJECT_ID(N'[dbo].[FK_CommonUser_inherits_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[User_CommonUser] DROP CONSTRAINT [FK_CommonUser_inherits_User];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Enterprise_inherits_User]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[User_Enterprise] DROP CONSTRAINT [FK_Enterprise_inherits_User];
 GO
 
 -- --------------------------------------------------
@@ -40,11 +40,11 @@ GO
 IF OBJECT_ID(N'[dbo].[User_Administrator]', 'U') IS NOT NULL
     DROP TABLE [dbo].[User_Administrator];
 GO
-IF OBJECT_ID(N'[dbo].[User_Enterprise]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[User_Enterprise];
-GO
 IF OBJECT_ID(N'[dbo].[User_CommonUser]', 'U') IS NOT NULL
     DROP TABLE [dbo].[User_CommonUser];
+GO
+IF OBJECT_ID(N'[dbo].[User_Enterprise]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[User_Enterprise];
 GO
 
 -- --------------------------------------------------
@@ -56,9 +56,9 @@ CREATE TABLE [dbo].[OpportunitySet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Description] nvarchar(max)  NOT NULL,
-    [CriterionList] nvarchar(max)  NOT NULL,
     [ExpireDate] datetime  NOT NULL,
-    [CreateDate] datetime  NOT NULL
+    [CreateDate] datetime  NOT NULL,
+    [CriteriaId] int  NOT NULL
 );
 GO
 
@@ -68,6 +68,17 @@ CREATE TABLE [dbo].[User] (
     [Name] nvarchar(max)  NOT NULL,
     [Email] nvarchar(max)  NOT NULL,
     [Password] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'Criteria'
+CREATE TABLE [dbo].[Criteria] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Description] nvarchar(max)  NOT NULL,
+    [PWD] smallint  NOT NULL,
+    [Weight] smallint  NOT NULL,
+    [OpportunityId] int  NOT NULL
 );
 GO
 
@@ -108,6 +119,12 @@ ADD CONSTRAINT [PK_User]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'Criteria'
+ALTER TABLE [dbo].[Criteria]
+ADD CONSTRAINT [PK_Criteria]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [Id] in table 'User_Administrator'
 ALTER TABLE [dbo].[User_Administrator]
 ADD CONSTRAINT [PK_User_Administrator]
@@ -129,6 +146,21 @@ GO
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
+
+-- Creating foreign key on [OpportunityId] in table 'Criteria'
+ALTER TABLE [dbo].[Criteria]
+ADD CONSTRAINT [FK_OpportunityCriteria]
+    FOREIGN KEY ([OpportunityId])
+    REFERENCES [dbo].[OpportunitySet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_OpportunityCriteria'
+CREATE INDEX [IX_FK_OpportunityCriteria]
+ON [dbo].[Criteria]
+    ([OpportunityId]);
+GO
 
 -- Creating foreign key on [Id] in table 'User_Administrator'
 ALTER TABLE [dbo].[User_Administrator]

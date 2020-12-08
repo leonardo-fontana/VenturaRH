@@ -4,116 +4,149 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="Model1StoreContainer">
-    <EntitySet Name="OpportunitySet" EntityType="Model1.Store.OpportunitySet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="User" EntityType="Model1.Store.User" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="User_Administrator" EntityType="Model1.Store.User_Administrator" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="User_Enterprise" EntityType="Model1.Store.User_Enterprise" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="User_CommonUser" EntityType="Model1.Store.User_CommonUser" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="FK_Administrator_inherits_User" Association="Model1.Store.FK_Administrator_inherits_User">
-      <End Role="User" EntitySet="User" />
-      <End Role="Administrator" EntitySet="User_Administrator" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Enterprise_inherits_User" Association="Model1.Store.FK_Enterprise_inherits_User">
-      <End Role="User" EntitySet="User" />
-      <End Role="Enterprise" EntitySet="User_Enterprise" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CommonUser_inherits_User" Association="Model1.Store.FK_CommonUser_inherits_User">
-      <End Role="User" EntitySet="User" />
-      <End Role="CommonUser" EntitySet="User_CommonUser" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="OpportunitySet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CriterionList" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ExpireDate" Type="datetime" Nullable="false" />
-    <Property Name="CreateDate" Type="datetime" Nullable="false" />
-  </EntityType>
-  <EntityType Name="User">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="User_Administrator">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="User_Enterprise">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="CNPJ" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="User_CommonUser">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Age" Type="smallint" Nullable="false" />
-    <Property Name="CPF" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Id" Type="int" Nullable="false" />
-  </EntityType>
-  <Association Name="FK_Administrator_inherits_User">
-    <End Role="User" Type="Model1.Store.User" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Administrator" Type="Model1.Store.User_Administrator" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Administrator">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Enterprise_inherits_User">
-    <End Role="User" Type="Model1.Store.User" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Enterprise" Type="Model1.Store.User_Enterprise" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Enterprise">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CommonUser_inherits_User">
-    <End Role="User" Type="Model1.Store.User" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="CommonUser" Type="Model1.Store.User_CommonUser" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CommonUser">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Criteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PWD" Type="smallint" Nullable="false" />
+          <Property Name="Weight" Type="smallint" Nullable="false" />
+          <Property Name="OpportunityId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OpportunitySet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ExpireDate" Type="datetime" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="CriteriaId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Administrator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_CommonUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Age" Type="smallint" Nullable="false" />
+          <Property Name="CPF" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Enterprise">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="CNPJ" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Administrator_inherits_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User_Administrator" Type="Self.User_Administrator" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User_Administrator">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommonUser_inherits_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User_CommonUser" Type="Self.User_CommonUser" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User_CommonUser">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Enterprise_inherits_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User_Enterprise" Type="Self.User_Enterprise" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User_Enterprise">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OpportunityCriteria">
+          <End Role="OpportunitySet" Type="Self.OpportunitySet" Multiplicity="1" />
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpportunitySet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="OpportunityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model1StoreContainer">
+          <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OpportunitySet" EntityType="Self.OpportunitySet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Administrator" EntityType="Self.User_Administrator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_CommonUser" EntityType="Self.User_CommonUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Enterprise" EntityType="Self.User_Enterprise" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Administrator_inherits_User" Association="Self.FK_Administrator_inherits_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="User_Administrator" EntitySet="User_Administrator" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommonUser_inherits_User" Association="Self.FK_CommonUser_inherits_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="User_CommonUser" EntitySet="User_CommonUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Enterprise_inherits_User" Association="Self.FK_Enterprise_inherits_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="User_Enterprise" EntitySet="User_Enterprise" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OpportunityCriteria" Association="Self.FK_OpportunityCriteria">
+            <End Role="OpportunitySet" EntitySet="OpportunitySet" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="OpportunitySet" EntityType="Model1.Opportunity" />
           <EntitySet Name="User" EntityType="Model1.User" />
+          <EntitySet Name="Criteria" EntityType="Model1.Criteria" />
+          <AssociationSet Name="OpportunityCriteria" Association="Model1.OpportunityCriteria">
+            <End Role="Opportunity" EntitySet="OpportunitySet" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Opportunity">
           <Key>
@@ -122,9 +155,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CriterionList" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="ExpireDate" Type="DateTime" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CriteriaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Criteria" Relationship="Model1.OpportunityCriteria" FromRole="Opportunity" ToRole="Criteria" />
         </EntityType>
         <EntityType Name="User" Abstract="true">
           <Key>
@@ -144,6 +178,30 @@
           <Property Name="Age" Type="Int16" Nullable="false" />
           <Property Name="CPF" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
+        <EntityType Name="Criteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="PWD" Type="Int16" Nullable="false" />
+          <Property Name="Weight" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Opportunity" Relationship="Model1.OpportunityCriteria" FromRole="Criteria" ToRole="Opportunity" />
+          <Property Name="OpportunityId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="OpportunityCriteria">
+          <End Type="Model1.Opportunity" Role="Opportunity" Multiplicity="1" />
+          <End Type="Model1.Criteria" Role="Criteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Opportunity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="OpportunityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -156,9 +214,9 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="CriterionList" ColumnName="CriterionList" />
           <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -187,6 +245,18 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Age" ColumnName="Age" />
           <ScalarProperty Name="CPF" ColumnName="CPF" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Criteria">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Criteria)">
+        <MappingFragment StoreEntitySet="Criteria">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PWD" ColumnName="PWD" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="OpportunityId" ColumnName="OpportunityId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

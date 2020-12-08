@@ -27,5 +27,6 @@ namespace Ventura.RH.Domain
     
         public virtual DbSet<Opportunity> OpportunitySet { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Criteria> Criteria { get; set; }
     }
 }
